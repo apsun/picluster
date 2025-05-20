@@ -1,0 +1,45 @@
+- name: 'configure packages'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'apt-get update'
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: 'apt-get dist-upgrade'
+      ansible.builtin.apt:
+        upgrade: 'dist'
+
+    - name: 'apt-get upgrade'
+      ansible.builtin.apt:
+        name: '*'
+        state: latest
+
+    - name: 'apt-get autoremove --purge && apt-get clean'
+      ansible.builtin.apt:
+        autoremove: true
+        purge: true
+        clean: true
+
+    - name: 'install useful utilities'
+      ansible.builtin.apt:
+        name:
+          - 'git'
+          - 'vim'
+          - 'tree'
+          - 'tmux'
+          - 'jq'
+          - 'ripgrep'
+          - 'htop'
+          - 'strace'
+          - 'ldnsutils'
+          - 'arping'
+          - 'tcpdump'
+          - 'iperf3'
+          - 'hdparm'
+          - 'smartmontools'
+
+    - name: 'choose vim as editor'
+      community.general.alternatives:
+        name: 'editor'
+        path: '/usr/bin/vim.basic'
