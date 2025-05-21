@@ -22,6 +22,8 @@ k3s_cluster:
     # needed because cert is generated with $HOSTNAME, but we connect via $HOSTNAME.lan
     extra_server_args: "--tls-san {{ groups['server'] | map('extract', hostvars, 'inventory_hostname') | join(',') }}"
 
+    # configure http mirror (it will try to use https by default)
+    # docker run -d -p 5000:5000 --name registry registry:latest
     registries_config_yaml: |
       mirrors:
         sachiko.lan:
