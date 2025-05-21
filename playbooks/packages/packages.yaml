@@ -36,10 +36,30 @@
           - 'arping'
           - 'tcpdump'
           - 'iperf3'
-          - 'hdparm'
-          - 'smartmontools'
 
     - name: 'choose vim as editor'
       community.general.alternatives:
         name: 'editor'
         path: '/usr/bin/vim.basic'
+
+- name: 'configure compute node packages'
+  hosts: picluster_compute
+  become: true
+  tasks:
+    - name: 'remove storage utilities'
+      ansible.builtin.apt:
+        state: absent
+        name:
+          - 'hdparm'
+          - 'smartmontools'
+
+- name: 'configure storage node packages'
+  hosts: picluster_storage
+  become: true
+  tasks:
+    - name: 'install storage utilities'
+      ansible.builtin.apt:
+        name:
+          - 'open-iscsi'  # needed by longhorn
+          - 'hdparm'
+          - 'smartmontools'
