@@ -12,3 +12,10 @@ kubectl get deploy hello && kubectl delete deploy hello && kubectl wait --for de
 # clean unused images
 # https://github.com/k3s-io/k3s/issues/1900
 ansible -i inventory.yaml k3s_cluster -b -m command -a 'k3s crictl rmi --prune'
+
+# stop registry on host
+docker stop registry
+
+# clean containers and images
+docker container prune -f
+docker image prune -af
