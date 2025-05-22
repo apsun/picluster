@@ -14,8 +14,7 @@ kubectl get deploy hello && kubectl delete deploy hello && kubectl wait --for de
 ansible -i inventory.yaml k3s_cluster -b -m command -a 'k3s crictl rmi --prune'
 
 # stop registry on host
-docker stop registry
+docker inspect registry && docker stop registry
 
 # clean containers and images
-docker container prune -f
-docker image prune -af
+docker system prune -af --volumes
