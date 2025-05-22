@@ -5,9 +5,10 @@ cd "$(dirname "$0")"
 
 # start a local docker registry
 docker inspect registry || docker run -d -p 5000:5000 --name registry registry:latest
+[ "$(docker inspect -f '{{.State.Status}}' registry)" == "running" ] || docker start registry
 
-# build localhost:5000/hello
-docker buildx build --platform linux/amd64,linux/arm64 -t localhost:5000/hello docker/ --push
+# build localhost:5000/hello for arm64 and push to local registry
+docker build --platform linux/arm64 -t localhost:5000/hello docker/ --push
 
 # delete existing service
 kubectl get svc hello && kubectl delete svc hello && kubectl wait --for delete svc hello
