@@ -13,22 +13,30 @@
         name:
           - 'open-iscsi'
 
-    - name: 'create /dev/sda1 partition'
+    - name: 'get disk path'
+      ansible.builtin.shell:
+        cmd: 'smartctl --scan -d sat -j | jq -r .devices[].name'
+      register: longhorn_disk_path_result
+      changed_when: false
+
+    - name: 'create longhorn-data partition'
       community.general.parted:
-        device: '/dev/sda'
+        device: "{{ longhorn_disk_path_result.stdout }}"
+        label: gpt
+        name: 'longhorn-data'
         number: 1
         state: present
         fs_type: ext4
 
-    - name: 'create ext4 fs on /dev/sda1'
+    - name: 'create ext4 fs on longhorn-data partition'
       community.general.filesystem:
-        dev: '/dev/sda1'
+        dev: '/dev/disk/by-partlabel/longhorn-data'
         fstype: ext4
 
-    - name: 'mount /dev/sda1 to /var/lib/longhorn'
+    - name: 'mount longhorn-data to /var/lib/longhorn'
       ansible.posix.mount:
         path: '/var/lib/longhorn'
-        src: '/dev/sda1'
+        src: '/dev/disk/by-partlabel/longhorn-data'
         fstype: ext4
         opts: 'defaults,noatime'
         state: mounted
