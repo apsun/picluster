@@ -1,0 +1,11 @@
+persistence:
+  # only 2 nodes with storage in the cluster
+  defaultClassReplicaCount: 2
+
+defaultSettings:
+  # only use nodes with label node.longhorn.io/create-default-disk=true
+  # https://longhorn.io/kb/tip-only-use-storage-on-a-set-of-nodes/
+  createDefaultDiskLabeledNodes: true
+
+  # https://longhorn.io/docs/1.8.1/best-practices/#minimal-available-storage-and-over-provisioning
+  storageMinimalAvailablePercentage: 10

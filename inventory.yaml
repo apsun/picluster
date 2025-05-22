@@ -1,4 +1,15 @@
 ---
+compute:
+  hosts:
+    raspberrypi5b-yosemite.lan:
+    raspberrypi5b-yellowstone.lan:
+    raspberrypi5b-zion.lan:
+
+storage:
+  hosts:
+    raspberrypi5b-olympic.lan:
+    raspberrypi5b-grandcanyon.lan:
+
 k3s_cluster:
   children:
     server:
