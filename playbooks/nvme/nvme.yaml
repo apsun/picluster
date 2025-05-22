@@ -1,0 +1,29 @@
+- name: 'configure nvme'
+  hosts: all
+  become: true
+  tasks:
+    # https://old.reddit.com/r/raspberry_pi/comments/1bc8xzf/raspberry_pi_5_freezing_on_nvme/
+    - name: 'disable nvme power saving'
+      ansible.builtin.replace:
+        path: '/boot/firmware/cmdline.txt'
+        regexp: '^([\w](?!.*\b{{ item }}\b).*)$'
+        replace: '\1 {{ item }}'
+      loop:
+        - 'nvme_core.default_ps_max_latency_us=0'
+        - 'pcie_aspm=off'
+      notify:
+        - 'reboot'
+
+    - name: 'enable pcie3x1'
+      ansible.builtin.lineinfile:
+        path: '/boot/firmware/config.txt'
+        line: "{{ item }}"
+      loop:
+        - 'dtparam=pciex1'
+        - 'dtparam=pciex1_gen=3'
+      notify:
+        - 'reboot'
+
+  handlers:
+    - name: 'reboot'
+      ansible.builtin.reboot:
