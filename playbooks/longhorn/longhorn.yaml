@@ -34,6 +34,11 @@
       register: longhorn_disk_path_result
       changed_when: false
 
+    - name: 'ensure exactly one disk present'
+      ansible.builtin.assert:
+        that: "longhorn_disk_path_result.stdout | split('\n') | length == 1"
+        fail_msg: 'node must have exactly one storage disk'
+
     - name: 'create longhorn-data partition'
       community.general.parted:
         device: "{{ longhorn_disk_path_result.stdout }}"
