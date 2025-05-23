@@ -1,4 +1,4 @@
-- name: 'install longhorn dependencies'
+- name: 'configure all nodes'
   hosts: all
   become: true
   tasks:
@@ -6,6 +6,17 @@
       ansible.builtin.apt:
         name:
           - 'open-iscsi'
+          - 'cryptsetup'
+
+    - name: 'enable /proc/config.gz'
+      community.general.modprobe:
+        name: 'configs'
+        persistent: present
+
+    - name: 'enable encryption kmod'
+      community.general.modprobe:
+        name: 'dm_crypt'
+        persistent: present
 
 - name: 'configure storage nodes'
   hosts: storage
@@ -60,7 +71,7 @@
     - name: 'unmount /var/lib/longhorn'
       ansible.posix.mount:
         path: '/var/lib/longhorn'
-        state: absent
+        state: unmounted
       when: check_longhorn_mount_result.rc != 0
 
     - name: 'mount longhorn-data to /var/lib/longhorn'
