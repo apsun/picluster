@@ -1,0 +1,4 @@
+- import_playbook: 'playbooks/nvme/nvme.yaml'
+- import_playbook: 'playbooks/packages/packages.yaml'
+- import_playbook: 'k3s.orchestration.site'
+- import_playbook: 'playbooks/longhorn/longhorn.yaml'
