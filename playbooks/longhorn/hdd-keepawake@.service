@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodically access a HDD to prevent sleep
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'while :; do dd if=/dev/disk/by-partlabel/%i of=/dev/null iflag=direct count=1; sleep 60; done'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

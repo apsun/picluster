@@ -33,6 +33,18 @@
         dev: '/dev/disk/by-partlabel/longhorn-data'
         fstype: ext4
 
+    - name: 'create hdd-keepawake service'
+      ansible.builtin.copy:
+        src: 'hdd-keepawake@.service'
+        dest: '/etc/systemd/system/hdd-keepawake@.service'
+
+    - name: 'enable hdd-keepawake service'
+      ansible.builtin.systemd:
+        name: 'hdd-keepawake@longhorn-data'
+        state: started
+        enabled: true
+        daemon_reload: true
+
     - name: 'mount longhorn-data to /var/lib/longhorn'
       ansible.posix.mount:
         path: '/var/lib/longhorn'
