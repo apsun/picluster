@@ -1,4 +1,13 @@
-- name: 'configure storage'
+- name: 'install longhorn dependencies'
+  hosts: all
+  become: true
+  tasks:
+    - name: 'install longhorn dependencies'
+      ansible.builtin.apt:
+        name:
+          - 'open-iscsi'
+
+- name: 'configure storage nodes'
   hosts: storage
   become: true
   tasks:
@@ -7,11 +16,6 @@
         name:
           - 'hdparm'
           - 'smartmontools'
-
-    - name: 'install longhorn dependencies'
-      ansible.builtin.apt:
-        name:
-          - 'open-iscsi'
 
     - name: 'get disk path'
       ansible.builtin.shell:
@@ -45,6 +49,20 @@
         enabled: true
         daemon_reload: true
 
+    - name: 'check if longhorn mount is valid'
+      ansible.builtin.command:
+        cmd: 'findmnt /dev/disk/by-partlabel/longhorn-data'
+      register: check_longhorn_mount_result
+      changed_when: false
+      failed_when: false
+
+    # remounted doesn't work, have to explicitly unmount + mount
+    - name: 'unmount /var/lib/longhorn'
+      ansible.posix.mount:
+        path: '/var/lib/longhorn'
+        state: absent
+      when: check_longhorn_mount_result.rc != 0
+
     - name: 'mount longhorn-data to /var/lib/longhorn'
       ansible.posix.mount:
         path: '/var/lib/longhorn'
@@ -52,6 +70,7 @@
         fstype: ext4
         opts: 'defaults,noatime'
         state: mounted
+      when: check_longhorn_mount_result.rc != 0
 
     - name: 'label storage nodes to be used with longhorn'
       become: false
