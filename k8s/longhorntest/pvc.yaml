@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: test-pvc
+  name: longhorntest-pvc
   namespace: default
 spec:
   accessModes:
