@@ -1,0 +1,8 @@
+prometheus:
+  prometheusSpec:
+    # workaround for validation error
+    # Invalid value: 0: spec.maximumStartupDurationSeconds in body should be greater than or equal to 60
+    maximumStartupDurationSeconds: 900
+
+grafana:
+  adminPassword: "{{ lookup('ansible.builtin.pipe', 'pass picluster/grafana-admin-password') }}"
