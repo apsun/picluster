@@ -9,3 +9,7 @@ defaultSettings:
 
   # https://longhorn.io/docs/1.8.1/best-practices/#minimal-available-storage-and-over-provisioning
   storageMinimalAvailablePercentage: 10
+
+  # disable analytics and update checks
+  allowCollectingLonghornUsageMetrics: false
+  upgradeChecker: false
