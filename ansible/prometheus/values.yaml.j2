@@ -4,5 +4,25 @@ prometheus:
     # Invalid value: 0: spec.maximumStartupDurationSeconds in body should be greater than or equal to 60
     maximumStartupDurationSeconds: 900
 
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 10Gi
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 10Gi
+
 grafana:
   adminPassword: "{{ lookup('ansible.builtin.pipe', 'pass picluster/grafana-admin-password') }}"
+
+  persistence:
+    enabled: true
+    size: 10Gi
