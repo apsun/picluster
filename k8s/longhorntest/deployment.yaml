@@ -1,33 +1,20 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: test-pvc
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 2Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-deployment
+  name: longhorntest-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test
+      app: longhorntest
   template:
     metadata:
       labels:
-        app: test
+        app: longhorntest
     spec:
       containers:
-      - name: test-pod
+      - name: longhorntest-pod
         image: nginx:stable-alpine
         imagePullPolicy: IfNotPresent
         livenessProbe:
@@ -38,9 +25,9 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
         volumeMounts:
-        - name: test-vol
+        - name: longhorntest-vol
           mountPath: /data
       volumes:
-      - name: test-vol
+      - name: longhorntest-vol
         persistentVolumeClaim:
-          claimName: test-pvc
+          claimName: longhorntest-pvc
