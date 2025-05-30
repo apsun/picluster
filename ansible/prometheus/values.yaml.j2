@@ -30,11 +30,16 @@ grafana:
       check_for_updates: false
       check_for_plugin_updates: false
       feedback_links_enabled: false
+
     news:
       news_feed_enabled: false
 
     auth.anonymous:
       enabled: true
+
+    # allow running ad-hoc queries (explore) while anonymous
+    users:
+      viewers_can_edit: true
 
   # default is RollingUpdate, which causes deadlock because the
   # old pod doesn't release its PVC and new pod can't acquire the PVC
