@@ -33,6 +33,9 @@ grafana:
     news:
       news_feed_enabled: false
 
+    auth.anonymous:
+      enabled: true
+
   # default is RollingUpdate, which causes deadlock because the
   # old pod doesn't release its PVC and new pod can't acquire the PVC
   deploymentStrategy:
