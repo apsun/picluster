@@ -23,6 +23,22 @@ alertmanager:
 grafana:
   adminPassword: "{{ lookup('ansible.builtin.pipe', 'pass picluster/grafana-admin-password') }}"
 
+  grafana.ini:
+    analytics:
+      enabled: false
+      reporting_enabled: false
+      check_for_updates: false
+      check_for_plugin_updates: false
+      feedback_links_enabled: false
+    news:
+      news_feed_enabled: false
+
+  # default is RollingUpdate, which causes deadlock because the
+  # old pod doesn't release its PVC and new pod can't acquire the PVC
+  deploymentStrategy:
+    type:
+      Recreate
+
   persistence:
     enabled: true
     size: 10Gi
