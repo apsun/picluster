@@ -15,11 +15,17 @@
         name: '*'
         state: latest
 
-    - name: 'apt-get autoremove --purge && apt-get clean'
+    - name: 'apt-get autoremove --purge'
       ansible.builtin.apt:
         autoremove: true
         purge: true
+
+    # force changed=false because ansible always returns true here
+    # https://github.com/ansible/ansible/blob/f6be5ab2241377b93d5fc06c87d6bf86c4225123/lib/ansible/modules/apt.py#L1351
+    - name: 'apt-get clean'
+      ansible.builtin.apt:
         clean: true
+      changed_when: false
 
     - name: 'install useful utilities'
       ansible.builtin.apt:
