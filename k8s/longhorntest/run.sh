@@ -17,8 +17,8 @@ describe() {
 }
 
 delete() {
-    kubectl delete -f pvc.yaml
     kubectl delete -f deployment.yaml
+    kubectl delete -f pvc.yaml
 }
 
 "$@"
