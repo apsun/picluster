@@ -28,9 +28,14 @@
           - 'hdparm'
           - 'smartmontools'
 
-    - name: 'get disk path'
+    # TODO: this should probably use a whitelist instead of blacklist
+    # the VIRTUAL-DISK horribleness is to filter out longhorn PVs
+    - name: 'find all hdds on the system'
       ansible.builtin.shell:
-        cmd: 'smartctl --scan -d sat -j | jq -r .devices[].name'
+        cmd: |
+          smartctl --scan -d sat -j | jq -r .devices[].name | while read path; do
+            udevadm info -n ${path} -q property | grep ID_MODEL=VIRTUAL-DISK -q || echo ${path}
+          done
       register: longhorn_disk_path_result
       changed_when: false
 
