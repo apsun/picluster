@@ -88,6 +88,17 @@
         state: mounted
       when: check_longhorn_mount_result.rc != 0
 
+    # ensure no dangling references to the old mount by recreating the pod
+    - name: 'restart longhorn instance-manager pod'
+      become: false
+      delegate_to: localhost
+      ansible.builtin.command:
+        cmd: >
+          kubectl -n longhorn-system delete pod
+          -l longhorn.io/component=instance-manager
+          -l longhorn.io/node={{ inventory_hostname_short }}
+      when: check_longhorn_mount_result.rc != 0
+
     - name: 'label storage nodes to be used with longhorn'
       become: false
       delegate_to: localhost
