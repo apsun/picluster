@@ -24,6 +24,21 @@
       notify:
         - 'reboot'
 
+    # raspbian now defaults to volatile journald for pErFoRmAnCe
+    # https://github.com/raspberrypi/bookworm-feedback/issues/415
+    - name: 'enable persistent journald'
+      ansible.builtin.lineinfile:
+        path: '/etc/systemd/journald.conf'
+        regexp: '^Storage='
+        line: '#Storage=auto'
+      notify:
+        - 'restart systemd-journald'
+
   handlers:
     - name: 'reboot'
       ansible.builtin.reboot:
+
+    - name: 'restart systemd-journald'
+      ansible.builtin.systemd:
+        name: 'systemd-journald'
+        state: restarted
