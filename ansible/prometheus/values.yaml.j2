@@ -11,6 +11,11 @@ prometheus:
             requests:
               storage: 250Gi
 
+    # disable filtering by release label to pick up all monitor crds
+    # https://stackoverflow.com/a/65648944
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
 alertmanager:
   alertmanagerSpec:
     storage:

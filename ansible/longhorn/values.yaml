@@ -13,3 +13,7 @@ defaultSettings:
   # disable analytics and update checks
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
+
+metrics:
+  serviceMonitor:
+    enabled: true
