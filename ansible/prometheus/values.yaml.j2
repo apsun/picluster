@@ -9,7 +9,7 @@ prometheus:
         spec:
           resources:
             requests:
-              storage: 250Gi
+              storage: 25Gi
 
     # disable filtering by release label to pick up all monitor crds
     # https://stackoverflow.com/a/65648944
@@ -23,7 +23,7 @@ alertmanager:
         spec:
           resources:
             requests:
-              storage: 10Gi
+              storage: 1Gi
 
 grafana:
   adminPassword: "{{ lookup('ansible.builtin.pipe', 'pass picluster/grafana-admin-password') }}"
@@ -54,4 +54,4 @@ grafana:
 
   persistence:
     enabled: true
-    size: 10Gi
+    size: 1Gi
