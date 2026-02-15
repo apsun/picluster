@@ -3,3 +3,4 @@
 - import_playbook: 'k3s.orchestration.site'
 - import_playbook: 'longhorn/longhorn.yaml'
 - import_playbook: 'prometheus/prometheus.yaml'
+- import_playbook: 'postgres/postgres.yaml'

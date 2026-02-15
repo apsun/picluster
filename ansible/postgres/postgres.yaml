@@ -1,0 +1,15 @@
+- name: 'install cnpg'
+  hosts: localhost
+  tasks:
+    - name: 'add cnpg helm repo'
+      kubernetes.core.helm_repository:
+        name: 'cnpg'
+        repo_url: 'https://cloudnative-pg.github.io/charts'
+
+    - name: 'install cnpg'
+      kubernetes.core.helm:
+        name: 'cnpg'
+        chart_ref: 'cnpg/cloudnative-pg'
+        chart_version: '0.27.1'
+        release_namespace: 'cnpg-system'
+        create_namespace: true
