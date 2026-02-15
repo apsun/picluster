@@ -10,6 +10,7 @@
       kubernetes.core.helm:
         name: 'kube-prometheus'
         chart_ref: 'prometheus-community/kube-prometheus-stack'
+        chart_version: '81.6.9'
         release_namespace: 'monitoring'
         create_namespace: true
         values: "{{ lookup('template', 'values.yaml.j2') | from_yaml }}"
