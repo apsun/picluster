@@ -17,3 +17,7 @@ defaultSettings:
 metrics:
   serviceMonitor:
     enabled: true
+
+# allow downgrading version
+preUpgradeChecker:
+  upgradeVersionCheck: false

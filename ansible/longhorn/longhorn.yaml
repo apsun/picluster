@@ -46,7 +46,7 @@
       kubernetes.core.helm:
         name: 'longhorn'
         chart_ref: 'longhorn/longhorn'
-        chart_version: '1.11.0'
+        chart_version: '1.10.2'
         release_namespace: 'longhorn-system'
         create_namespace: true
         values_files:
