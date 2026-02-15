@@ -1,29 +1,9 @@
 prometheus:
   prometheusSpec:
-    # workaround for validation error
-    # Invalid value: 0: spec.maximumStartupDurationSeconds in body should be greater than or equal to 60
-    maximumStartupDurationSeconds: 900
-
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          resources:
-            requests:
-              storage: 25Gi
-
     # disable filtering by release label to pick up all monitor crds
     # https://stackoverflow.com/a/65648944
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
-
-alertmanager:
-  alertmanagerSpec:
-    storage:
-      volumeClaimTemplate:
-        spec:
-          resources:
-            requests:
-              storage: 1Gi
 
 grafana:
   adminPassword: "{{ lookup('ansible.builtin.pipe', 'pass picluster/grafana-admin-password') }}"
@@ -54,4 +34,3 @@ grafana:
 
   persistence:
     enabled: true
-    size: 1Gi
