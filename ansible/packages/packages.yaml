@@ -43,6 +43,7 @@
           - 'arping'
           - 'tcpdump'
           - 'iperf3'
+          - 'linux-perf'
 
     - name: 'choose vim as editor'
       community.general.alternatives:
